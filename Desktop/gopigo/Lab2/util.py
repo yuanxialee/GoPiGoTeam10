@@ -25,6 +25,6 @@ def rot_deg(deg):
     pulse = int(abs(deg)/DPR/2)
     enc_tgt(1,1,pulse)
     if deg < 0:
-        left_rot()
-    else:
         right_rot()
+    else:
+        left_rot()
