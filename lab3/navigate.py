@@ -52,13 +52,18 @@ if __name__ == '__main__':
 
 	i = 0
 	j = len(obs.get_gobstacles())
+	gobs = obstacles()
 	while j > 0:
 		points = obs.get_gobstacle(i)
+		corners = obs.get_shape(i)
 		i+=1
 		j-=1
 		polygon = np.array(points)
-		plt.plot(polygon[:,0], polygon[:,1],'ko', label = 'polygon points')
+		plt.plot(polygon[:,0], polygon[:,1],'ko', label = 'grown obstacle')
+		original = np.array(corners)
+		plt.plot(original[:,0], original[:,1], 'b', label = 'original obstacle')
 		ch = np.array(convex_hull(points))
+		ch.tolist()
 		print ch
 		plt.plot(ch[:,0], ch[:,1],'r--',label = 'convex hull')
 	plt.xlim([0,dim[0]])
