@@ -80,8 +80,8 @@ class graph:
         V = np.array([vec1, -vec2])
         P = p2 - p1
         alpha, beta = P.dot(np.linalg.inv(V))
-        return (alpha >= 0 and alpha <= 1) \
-                and (beta >= 0 and beta <= 1)
+        return (alpha > 0 and alpha < 1) \
+                and (beta > 0 and beta < 1)
         
 
     def min_dist(self, visit = []):
@@ -150,10 +150,10 @@ if __name__ == '__main__':
     print g.get_vertex('Boston').known
     '''
     g = graph()
-    v1 = vertex(1,0,0)
-    v2 = vertex(2,1,1)
-    v3 = vertex(3,2,3)
-    v4 = vertex(4,2,0)
+    v1 = vertex(1,2,2)
+    v2 = vertex(2,2,2)
+    v3 = vertex(3,0,0)
+    v4 = vertex(4,4,3)
     e1 = edge(v1, v3)
     e2 = edge(v2, v4)
     print g.intersect(e1, e2)

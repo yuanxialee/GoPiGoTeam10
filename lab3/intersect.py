@@ -4,9 +4,9 @@ from graph import edge, graph, vertex
 
 if __name__ == '__main__':
     p1 = np.array([0,0])
-    p2 = np.array([0,2])
-    p3 = np.array([4,4])
-    p4 = np.array([4,0])
+    p2 = np.array([2,4])
+    p3 = np.array([3,3])
+    p4 = np.array([2,0])
     #p1 = np.array([0,0])
     #p2 = np.array([1,1])
     #p3 = np.array([2,3])
@@ -32,3 +32,4 @@ if __name__ == '__main__':
     plt.arrow(p2[0],p2[1],vec2[0],vec2[1],head_length=-0.1,head_width=0.05,ec='b')
     plt.margins(0.15,0.15)
     plt.show()
+    print (alpha > 0 and alpha < 1) and (beta > 0 and beta < 1)
