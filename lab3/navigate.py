@@ -11,6 +11,7 @@ if __name__ == '__main__':
 
 	obs = obstacles()
 	b = block()
+	
 
 	info = []
 	start = []
@@ -52,22 +53,41 @@ if __name__ == '__main__':
 
 	i = 0
 	j = len(obs.get_gobstacles())
-	gobs = obstacles()
+	k = 0
+	gobs = obstacles() #set of grown obstacles
 	while j > 0:
+		l = 0
+		b = block()
 		points = obs.get_gobstacle(i)
 		corners = obs.get_shape(i)
-		i+=1
-		j-=1
 		polygon = np.array(points)
 		plt.plot(polygon[:,0], polygon[:,1],'ko', label = 'grown obstacle')
 		original = np.array(corners)
 		plt.plot(original[:,0], original[:,1], 'b', label = 'original obstacle')
 		ch = np.array(convex_hull(points))
-		ch.tolist()
 		print ch
+		k = len(ch)
+		while k > 0:
+			b.add_points(ch[l][0],ch[l][1])
+			k -= 1
+			l += 1
+		gobs.add_block(b, 0)
+		b = block()
 		plt.plot(ch[:,0], ch[:,1],'r--',label = 'convex hull')
+		i+=1
+		j-=1
+	print len(gobs.get_obstacles())
 	plt.xlim([0,dim[0]])
 	plt.ylim([0,dim[1]])
 	plt.legend()
 	plt.margins(0.05,0.1)
 	plt.show()
+
+
+	#An attempt to make a visibility graph 
+	#g = graph()
+	#i = 0
+	#for block in gobs.get_obstacles:
+		#gobs.get_obstacle[i]
+
+
