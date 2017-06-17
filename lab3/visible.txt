@@ -1,0 +1,15 @@
+
+Using obstacle instance and block objects, form edges and vertices in order iterate through obstacles
+
+Creating paths:
+	set of obstacles
+	get first obstacle 
+	if vertex in the same obstacle set, don't connect to those vertices;
+	try to connect to every other obstacle's vertices (go through obstacle by obstacle):
+		while attempting to connect each of the current obstacles vertices to the rest (beyond its own),
+		check intersections at EVERY OBSTACLE SEGMENT INCLUDING ITS OWN 
+		if no intersection:
+			make an edge 
+
+
+

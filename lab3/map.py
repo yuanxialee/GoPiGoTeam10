@@ -32,6 +32,10 @@ class obstacles:
 	def get_gobstacles(self):
 		return self.gblocks
 
+	def get_points(self, x, y, z):
+		return self.blocks[x][y][z]
+
+
 
 
 
@@ -41,6 +45,7 @@ class block:
 		self.points = []
 		self.vertices = []
 		self.gpoints = []
+
 
 	def add_points(self, x, y):
 		self.points.append([x,y])

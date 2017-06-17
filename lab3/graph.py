@@ -1,13 +1,15 @@
 import numpy as np
-INF = 99999.
+import matplotlib.pyplot as plt
 
+INF = 99999.
 class vertex:
 
-    def __init__(self, id, x, y):
+    def __init__(self, id, x, y, b):
         # basic info.
         self.id = id
         self.x = float(x)
         self.y = float(y)
+        self.block = b
         self.neighbors = []
         # for Dijkstra
         self.known = False
@@ -34,14 +36,15 @@ class edge:
         return "{} -- {} -> {}".format(self.source,self.weight,self.target)
 
     #TODO: add comparator??
-
+    def __cmp__(self, other):
+        return self.source == self.source and self.target == self.target
 class graph:
 
     def __init__(self):
         self.vertices = {}
 
-    def add_vertex(self, id, x, y):
-        self.vertices[id] = vertex(id, x, y)
+    def add_vertex(self, id, x, y, b):
+        self.vertices[id] = vertex(id, x, y, b)
 
     def add_edge(self, id1, id2):
         v1 = self.get_vertex(id1)
@@ -70,18 +73,20 @@ class graph:
         return self.vertices[id]
 
     def intersect(self, edge1, edge2):
+        if edge1 == edge2:
+            return True
         p1 = np.array([edge1.source.x, edge1.source.y])
         p2 = np.array([edge2.source.x, edge2.source.y])
         p3 = np.array([edge1.target.x, edge1.target.y])
         p4 = np.array([edge2.target.x, edge2.target.y])
-
+    
         vec1 = p3 - p1
         vec2 = p4 - p2
         V = np.array([vec1, -vec2])
         P = p2 - p1
         alpha, beta = P.dot(np.linalg.inv(V))
-        return (alpha >= 0 and alpha <= 1) \
-                and (beta >= 0 and beta <= 1)
+        return (alpha > 0 and alpha < 1) \
+                and (beta > 0 and beta < 1)
         
 
     def min_dist(self, visit = []):
@@ -99,6 +104,15 @@ class graph:
             n_nodes -= 1
         return node
     
+    def visualize(self):
+        for v in self.vertices.values():
+            plt.plot(v.x, v.y, 'ko')
+            plt.text(v.x-0.5, v.y+0.5, str(v.id))
+            for neighbor in v.neighbors:
+                plt.plot([v.x, neighbor.target.x], [v.y, neighbor.target.y], 'k-')
+        plt.margins(0.15, 0.15)
+        plt.show()
+
     def dijkstra(self, id):
         complete = []
         visit = []
@@ -140,20 +154,21 @@ class graph:
         print "Visit ", visit
 
 if __name__ == '__main__':
-    '''
     g = graph()
     g.add_vertex('New York',50,30)
     g.add_vertex('Boston',55, 45)
     g.add_edge('New York', 'Boston')
     g.dijkstra('New York')
     print g.distance('New York', 'Boston')
-    print g.get_vertex('Boston').known
+    print g.get_vertex('Boston')
+    g.visualize()
     '''
     g = graph()
-    v1 = vertex(1,0,0)
-    v2 = vertex(2,1,1)
-    v3 = vertex(3,2,3)
-    v4 = vertex(4,2,0)
+    v1 = vertex(1,2,2)
+    v2 = vertex(2,2,2)
+    v3 = vertex(3,0,0)
+    v4 = vertex(4,4,3)
     e1 = edge(v1, v3)
     e2 = edge(v2, v4)
     print g.intersect(e1, e2)
+    '''
