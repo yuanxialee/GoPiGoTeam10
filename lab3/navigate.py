@@ -130,7 +130,7 @@ if __name__ == '__main__':
         g.visualize(gobs.get_obstacles())
         plt.show()
         
-        #g.dijkstra(1)
+        g.dijkstra(2)
         '''
 	i = 1
 	j = 0

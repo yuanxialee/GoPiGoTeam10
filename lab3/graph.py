@@ -137,7 +137,7 @@ class graph:
                 t = self.get_vertex(neighbor.target.id)
                 if minv.dist + w < t.dist:
                     t.dist = minv.dist + w
-                t.prev = minv 
+                    t.prev = minv
 
             minv.known = True
             print "Minv id = ", self.get_vertex(minv.id).id
@@ -146,10 +146,14 @@ class graph:
             print self.get_vertex(visit[0].id).known
 
             j = len(visit)
+            print "Len of visit = ", j
             i = 0
             while j > 0:
+                print "i = ", i
+                print minv.id == self.get_vertex(visit[i].id).id
                 if minv.id == self.get_vertex(visit[i].id).id:
                     visit.remove(self.get_vertex(visit[i].id))
+                    j -= 1
                 i += 1
                 j -= 1
             if len(visit) > 0:
