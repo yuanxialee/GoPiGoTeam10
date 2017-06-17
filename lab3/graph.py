@@ -1,6 +1,7 @@
 import numpy as np
-INF = 99999.
+import matplotlib.pyplot as plt
 
+INF = 99999.
 class vertex:
 
     def __init__(self, id, x, y):
@@ -99,6 +100,15 @@ class graph:
             n_nodes -= 1
         return node
     
+    def visualize(self):
+        for v in self.vertices.values():
+            plt.plot(v.x, v.y, 'ko')
+            plt.text(v.x-0.5, v.y+0.5, str(v.id))
+            for neighbor in v.neighbors:
+                plt.plot([v.x, neighbor.target.x], [v.y, neighbor.target.y], 'k-')
+        plt.margins(0.15, 0.15)
+        plt.show()
+
     def dijkstra(self, id):
         complete = []
         visit = []
@@ -140,14 +150,14 @@ class graph:
         print "Visit ", visit
 
 if __name__ == '__main__':
-    '''
     g = graph()
     g.add_vertex('New York',50,30)
     g.add_vertex('Boston',55, 45)
     g.add_edge('New York', 'Boston')
     g.dijkstra('New York')
     print g.distance('New York', 'Boston')
-    print g.get_vertex('Boston').known
+    print g.get_vertex('Boston')
+    g.visualize()
     '''
     g = graph()
     v1 = vertex(1,2,2)
@@ -157,3 +167,4 @@ if __name__ == '__main__':
     e1 = edge(v1, v3)
     e2 = edge(v2, v4)
     print g.intersect(e1, e2)
+    '''
