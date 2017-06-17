@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.patches import Polygon
 
 INF = 99999.
 class vertex:
@@ -104,13 +105,18 @@ class graph:
             n_nodes -= 1
         return node
     
-    def visualize(self):
+    def visualize(self, patches = None):
+        fig, ax = plt.subplots()
+        if patches is not None:
+            for patch in patches:
+                ax.add_patch(Polygon(patch, fill=True))
+
         for v in self.vertices.values():
-            plt.plot(v.x, v.y, 'ko')
-            plt.text(v.x-0.5, v.y+0.5, str(v.id))
+            ax.plot(v.x, v.y, 'ko')
+            ax.text(v.x-0.5, v.y+0.5, str(v.id))
             for neighbor in v.neighbors:
-                plt.plot([v.x, neighbor.target.x], [v.y, neighbor.target.y], 'k-')
-        plt.margins(0.15, 0.15)
+                ax.plot([v.x, neighbor.target.x], [v.y, neighbor.target.y], 'k-')
+        ax.margins(0.15, 0.15)
         plt.show()
 
     def dijkstra(self, id):

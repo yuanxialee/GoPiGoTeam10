@@ -1,17 +1,19 @@
+# standart packages
 import sys
 import numpy as np 
-import matplotlib.pyplot as plt
+import itertools
 from collections import deque
+from matplotlib import pyplot as plt
+from matplotlib.patches import Polygon
+# include files
 from map import *
 from convex_hull import *
 from graph import *
-
 
 if __name__ == '__main__':
 
 	obs = obstacles()
 	b = block()
-	
 
 	info = []
 	start = []
@@ -47,10 +49,6 @@ if __name__ == '__main__':
 		elif sides == 0 and count+1 is len(info):
 			obs.add_block(b, int(sys.argv[2]))
 
-
-	#print len(obs.get_gobstacles())
-	#print obs.get_gobstacle(3)
-
 	i = 0
 	j = len(obs.get_gobstacles())
 	k = 0
@@ -65,7 +63,7 @@ if __name__ == '__main__':
 		original = np.array(corners)
 		plt.plot(original[:,0], original[:,1], 'b', label = 'original obstacle')
 		ch = np.array(convex_hull(points))
-		print ch
+		#print ch
 		k = len(ch)
 		while k > 0:
 			b.add_points(ch[l][0],ch[l][1])
@@ -76,7 +74,7 @@ if __name__ == '__main__':
 		plt.plot(ch[:,0], ch[:,1],'r--',label = 'convex hull')
 		i+=1
 		j-=1
-	print len(gobs.get_obstacles())
+	#print len(gobs.get_obstacles())
 	plt.xlim([0,dim[0]])
 	plt.ylim([0,dim[1]])
 	plt.legend()
@@ -84,9 +82,56 @@ if __name__ == '__main__':
 	plt.show()
 
 
-	#An attempt to make a visibility graph 
+	# Visibility graph 
 	block_edges = []
+	i = 0           # id counter
 	g = graph()
+        g.add_vertex(i, start[0], start[1], -1)
+        i += 1
+        g.add_vertex(i, goal[0], goal[1], -1)
+        i += 1
+
+        # construct obstacles in graph
+	for blockid, block in enumerate(gobs.get_obstacles()):
+
+                # create vertex and edges in graph
+		start = i
+		end = start + len(block) - 1
+
+	        for x, y in block:
+		        if i == end:
+                                break
+			g.add_vertex(i, x, y, blockid)
+
+		        if i != start:
+			        g.add_edge(i-1, i)
+                                block_edges.append(g.get_edge(i-1,i))
+                                block_edges.append(g.get_edge(i,i-1))
+                        i += 1
+	        g.add_edge(start, end-1)
+                block_edges.append(g.get_edge(start, end-1))
+                block_edges.append(g.get_edge(end-1, start))
+        g.visualize(gobs.get_obstacles())
+        plt.show()
+        # create eligible path edgs
+        for v1 in g.vertices.values():
+                for v2 in g.vertices.values():
+                        if v1 == v2 or v1.block == v2.block:
+                                continue
+                        potential_edge = edge(v1, v2)
+                        crossed = False
+                        for block_edge in block_edges:
+                                if g.intersect(potential_edge, block_edge):
+                                        crossed = True
+                                        break
+                        if not crossed:
+                                g.add_edge(v1.id, v2.id)
+
+        g.visualize(gobs.get_obstacles())
+        plt.show()
+        
+        #g.dijkstra(1)
+        '''
 	i = 1
 	j = 0
 	numv = 1
@@ -100,8 +145,8 @@ if __name__ == '__main__':
 			block_edges.append(g.get_edge(numv-1, numv))
 			numv+=1
 			i+=1
-		#g.add_edge(numv-1, numv-i)
-		#block_edges.append(g.get_edge(numv-1,numv-i))
+		g.add_edge(numv-1, numv-i)
+		block_edges.append(g.get_edge(numv-1,numv-i))
 		i=0
 		j+=1
 		k-=1
@@ -137,7 +182,6 @@ if __name__ == '__main__':
 
 
 
-	'''
 	for block in gobs.get_obstacles():
 		itr = iter(block)
 		first_point = itr.next()
