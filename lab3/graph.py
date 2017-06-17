@@ -43,6 +43,7 @@ class graph:
 
     def __init__(self):
         self.vertices = {}
+        self.start = None
 
     def add_vertex(self, id, x, y, b):
         self.vertices[id] = vertex(id, x, y, b)
@@ -105,21 +106,35 @@ class graph:
             n_nodes -= 1
         return node
     
-    def visualize(self, patches = None):
+    def visualize(self, patches = None, lines = None):
         fig, ax = plt.subplots()
         if patches is not None:
             for patch in patches:
                 ax.add_patch(Polygon(patch, fill=True))
-
         for v in self.vertices.values():
             ax.plot(v.x, v.y, 'ko')
             ax.text(v.x-0.5, v.y+0.5, str(v.id))
             for neighbor in v.neighbors:
-                ax.plot([v.x, neighbor.target.x], [v.y, neighbor.target.y], 'k-')
+                ax.plot([v.x, neighbor.target.x], [v.y, neighbor.target.y], linewidth = 0.3, color='#808080')
+        if lines is not None:
+            arr = np.array(lines)
+            print arr
+            ax.plot(arr[:,0], arr[:,1], 'r', linewidth=3.0)
         ax.margins(0.15, 0.15)
         plt.show()
 
+    def path(self, to):
+        if to not in self.vertices:
+            raise ValueError('{} does not exist.'.format(to))
+        path = []
+        curr = self.get_vertex(to)
+        while (curr is not None):
+            path.insert(0, [curr.x, curr.y])
+            curr = curr.prev
+        return path
+
     def dijkstra(self, id):
+        self.start = id
         complete = []
         visit = []
         for vertex in self.vertices:
@@ -162,6 +177,7 @@ class graph:
 
         print "Complete ", complete
         print "Visit ", visit
+
 
 if __name__ == '__main__':
     g = graph()
