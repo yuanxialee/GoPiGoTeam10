@@ -9,6 +9,7 @@ from matplotlib.patches import Polygon
 from map import *
 from convex_hull import *
 from graph import *
+from rover import *
 
 if __name__ == '__main__':
 
@@ -28,6 +29,7 @@ if __name__ == '__main__':
 	        for i in range(len(data)):
 	            info.append(float(data[i].strip('\n')))
 
+	gopigo = rover(info[0], info[1])
 	start.extend((info[0],info[1]))
 	goal.extend((info[2],info[3]))
 	dim.extend((info[4],info[5]))
@@ -132,6 +134,12 @@ if __name__ == '__main__':
         
         g.dijkstra(0)
         g.visualize(gobs.get_obstacles(), g.path(1))
+
+
+
+
+
+
         '''
 	i = 1
 	j = 0
