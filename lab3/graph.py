@@ -75,8 +75,6 @@ class graph:
         return self.vertices[id]
 
     def intersect(self, edge1, edge2):
-        if edge1 == edge2:
-            return True
         p1 = np.array([edge1.source.x, edge1.source.y])
         p2 = np.array([edge2.source.x, edge2.source.y])
         p3 = np.array([edge1.target.x, edge1.target.y])
@@ -86,6 +84,28 @@ class graph:
         vec2 = p4 - p2
         V = np.array([vec1, -vec2])
         P = p2 - p1
+        if np.linalg.det(V) == 0:
+            # check if on the same line
+            M = np.array([vec1, P])
+            if np.linalg.det(M) == 0:
+                d1 = p2 - p1
+                ratio1 = vec1.dot(d1)/np.linalg.norm(vec1,2)**2
+
+                d2 = p4 - p1
+                ratio2 = vec1.dot(d2)/np.linalg.norm(vec1,2)**2
+
+                d3 = p1 - p4
+                ratio3 = vec2.dot(d2)/np.linalg.norm(vec2,2)**2
+
+                d4 = p3 - p4
+                ratio4 = vec2.dot(d2)/np.linalg.norm(vec2,2)**2
+                if (ratio1 > 0 and ratio1 < 1) or \
+                        (ratio2 > 0 and ratio2 < 1) or \
+                        (ratio3 > 0 and ratio3 < 1) or \
+                        (ratio4 > 0 and ratio4 < 1):
+                    return True
+            return False
+
         alpha, beta = P.dot(np.linalg.inv(V))
         return (alpha > 0 and alpha < 1) \
                 and (beta > 0 and beta < 1)
