@@ -115,7 +115,6 @@ if __name__ == '__main__':
                 block_edges.append(g.get_edge(end-1, start))
         #g.visualize(gobs.get_obstacles())
         
-        #plt.show()
         # create eligible path edgs
         for v1 in g.vertices.values():
                 for v2 in g.vertices.values():
@@ -131,35 +130,28 @@ if __name__ == '__main__':
                                 g.add_edge(v1.id, v2.id)
 
         #g.visualize(gobs.get_obstacles())
-        #plt.show()
         
         g.dijkstra(0)
         g.visualize(gobs.get_obstacles(), g.path(1))
         
-
+	
 	path = g.path(1)
 	l = len(path)
 	i = 1
 	gopigo.record_route()
-	while(True):
 	    # state 1: move to goal
-		while l > 1:
-			gopigo.turn_to_goal(path[i][0], path[i][1])
-			i+=1
-			l-=1
+	while l > 1:
+		gopigo.turn_to_goal(path[i][0], path[i][1])
+		i+=1
+		l-=1
+		gopigo.record_route()
+		if gopigo.on_goal():
+			stop()
 			gopigo.record_route()
-			if gopigo.on_goal():
-			    stop()
-			    gopigo.record_route()
-			    gopigo.state = 'success'
-
-		    # terminate state: either making goal or trapped
-
-		print "Current position = ({},{})", gopigo.xpos, gopigo.ypos 
-		if gopigo.state == 'success':
-			print "Success! You found the goal, bug!"
-		break
+			gopigo.state = 'success'
 	
+	print "Current position = ({},{})", gopigo.xpos, gopigo.ypos 
+		
 	'''
 	i = 1
 	j = 0

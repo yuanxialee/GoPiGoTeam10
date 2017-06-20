@@ -32,14 +32,13 @@ def convex_hull(points):
     # place sorted list
     sorted_pts = []
 
-    print len(data)
+    
     while len(data) > 0:
         sorted_pts.append(data.pop()[0])
     del data
-    print len(sorted_pts)
+
 
     # jettison right turning points
-    print 'Sorted: ',sorted_pts
     convex = [sorted_pts[0], sorted_pts.pop()]
     while len(sorted_pts) > 0:
         convex.append(sorted_pts.pop())

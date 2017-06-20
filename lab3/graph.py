@@ -160,7 +160,6 @@ class graph:
         for vertex in self.vertices:
             visit.append(self.get_vertex(vertex))
 
-        print self.get_vertex(visit[0].id).known
 
         n_nodes = len(self.vertices)
         self.get_vertex(id).dist = 0
@@ -175,17 +174,12 @@ class graph:
                     t.prev = minv
 
             minv.known = True
-            print "Minv id = ", self.get_vertex(minv.id).id
             complete.append(minv.id)
-            print "First indice of visit = ", self.get_vertex(visit[0].id).id
-            print self.get_vertex(visit[0].id).known
+            
 
             j = len(visit)
-            print "Len of visit = ", j
             i = 0
             while j > 0:
-                print "i = ", i
-                print minv.id == self.get_vertex(visit[i].id).id
                 if minv.id == self.get_vertex(visit[i].id).id:
                     visit.remove(self.get_vertex(visit[i].id))
                     j -= 1
@@ -195,8 +189,6 @@ class graph:
                 id = self.get_vertex(visit[0].id).id
             n_nodes -= 1
 
-        print "Complete ", complete
-        print "Visit ", visit
 
 
 if __name__ == '__main__':

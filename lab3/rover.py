@@ -25,27 +25,34 @@ class rover:
 
     def move(self, dist):
 	'''Move the robot and update position'''
-        set_left_speed(240)
-        set_right_speed(250)
-        time.sleep(0.4)
+        set_left_speed(160)
+        set_right_speed(165)
+        time.sleep(0.2)
         fwd_cm(dist)
-        time.sleep(4.5)
+        while read_enc_status():
+            time.sleep(0.1)
+        #while abs(x-self.xpos) > 3 and abs(y - self.ypos) > 3:
+        #    fwd_cm(3)
+        #    self.xpos += 3 * np.cos(self.theta)
+        #    self.ypos += 3 * np.sin(self.theta)
+        #    time.sleep(0.1)
         self.xpos += dist * np.cos(self.theta)
         self.ypos += dist * np.sin(self.theta)
-        time.sleep(1)
+        print "Current position after move = ({},{})", self.xpos, self.ypos
+        time.sleep(0.2)
 
 
     def rotate(self, degree):
 	'''Rotate the robot and update orientation'''
         set_left_speed(150)
         set_right_speed(160)
-        time.sleep(1)
+        time.sleep(0.3)
         rot_deg(degree)
+        while read_enc_status():
+            time.sleep(0.1)
         radian = degree / 180. * np.pi
         self.theta += radian
         time.sleep(1)
-        set_left_speed(150)
-        set_right_speed(160)
 
 
     def on_goal(self):
@@ -56,19 +63,21 @@ class rover:
 	'''
 	Move toward the goal until encountering a hit point or making the goal
 	'''
+        print "Current position = ({},{})".format(self.xpos, self.ypos)
         print "Current goal = ({}, {})".format(x, y)
-        self.dgoal = np.arctan(float(y)/float(x))
+        self.dgoal = np.arctan(float(y-self.ypos)/float(x-self.xpos))
+        print "dgoal = ", self.dgoal
+        print "self.theta = ", self.theta
         diff_rad = self.dgoal - self.theta
         diff_deg = diff_rad/np.pi*180
         print 'diff_rad = ', diff_rad
     	print 'diff_deg = ', diff_deg
-        print "Current position = ({},{})", self.xpos, self.ypos
     	self.rotate(diff_deg)
-        time.sleep(WAIT)
+        time.sleep(0.3)
         dist = np.sqrt((x-self.xpos)**2+(y-self.ypos)**2)
         print "Distance to go = ", dist
         self.move(dist)
-        time.sleep(1)
+        time.sleep(0.3)
 
 
     def report(self):
