@@ -48,11 +48,12 @@ class graph:
     def add_vertex(self, id, x, y, b):
         self.vertices[id] = vertex(id, x, y, b)
 
-    def add_edge(self, id1, id2):
+    def add_edge(self, id1, id2, directed = False):
         v1 = self.get_vertex(id1)
         v2 = self.get_vertex(id2)
         v1.neighbors.append(edge(v1, v2))
-        v2.neighbors.append(edge(v2, v1))
+        if not directed:
+            v2.neighbors.append(edge(v2, v1))
 
     def distance(self, id1, id2):
         edge = self.get_edge(id1, id2)

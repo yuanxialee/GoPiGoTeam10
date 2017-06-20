@@ -127,7 +127,7 @@ if __name__ == '__main__':
                                         crossed = True
                                         break
                         if not crossed:
-                                g.add_edge(v1.id, v2.id)
+                                g.add_edge(v1.id, v2.id, directed = True)
 
         #g.visualize(gobs.get_obstacles())
         
@@ -150,68 +150,4 @@ if __name__ == '__main__':
 			gopigo.record_route()
 			gopigo.state = 'success'
 	
-	print "Current position = ({},{})", gopigo.xpos, gopigo.ypos 
-		
-	'''
-	i = 1
-	j = 0
-	numv = 1
-	k = len(gobs.get_obstacles())
-	g.add_vertex(numv, gobs.get_points(0,0,0), gobs.get_points(0,0,1), j)
-	numv = 2
-	while k > 0:
-		while i < len(gobs.get_obstacle(j))-1:
-			g.add_vertex(numv, gobs.get_points(j,i,0), gobs.get_points(j,i,1), j)
-			g.add_edge(numv-1,numv)
-			block_edges.append(g.get_edge(numv-1, numv))
-			numv+=1
-			i+=1
-		g.add_edge(numv-1, numv-i)
-		block_edges.append(g.get_edge(numv-1,numv-i))
-		i=0
-		j+=1
-		k-=1
-		if k == 0:
-			g.add_vertex(0, start[0], start[1], j)
-			g.add_vertex(numv+1, goal[0], goal[1], j+1)
-
-	print g.get_edge(0,0)
-	g.visualize()
-	
-
-	for v in g.vertices.values():
-		print v
-		for neighbor in v.neighbors:
-			print neighbor
-
-
-	for v in g.vertices.values():
-		for other in g.vertices.values():
-			if v == other or v.block == other.block:
-				continue 
-
-			potential_edge = edge(v, other)
-			crossed = False 
-			for block_edge in block_edges:
-				print potential_edge
-				print block_edge
-				crossed = g.intersect(potential_edge, block_edge)
-				if crossed == True:
-					break			
-			if not crossed:
-				g.add_edge(v.id, other.id)
-
-
-
-	for block in gobs.get_obstacles():
-		itr = iter(block)
-		first_point = itr.next()
-
-		try:
-			while True:
-				curr_point = itr.next()
-				print curr_point
-		except StopIteration:
-			pass
-
-	'''
+	print "Current position = ({},{})".format(gopigo.xpos, gopigo.ypos)
