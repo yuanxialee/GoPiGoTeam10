@@ -18,7 +18,7 @@ class rover:
         self.ypos = s2
         self.theta = 0      			  # radians
 
-        self.xgoal = x				  # goal coordinates
+        self.xgoal = x				  # final goal coordinates
         self.ygoal = y
         self.dgoal = 0                # target orientation
 
@@ -29,6 +29,8 @@ class rover:
         set_right_speed(165)
         time.sleep(0.2)
         fwd_cm(dist)
+
+        #make sure it goes the right distance before switching to a new command
         while read_enc_status():
             time.sleep(0.1)
         #while abs(x-self.xpos) > 3 and abs(y - self.ypos) > 3:
@@ -61,10 +63,11 @@ class rover:
 
     def turn_to_goal(self, x, y):
 	'''
-	Move toward the goal until encountering a hit point or making the goal
+	Move toward the next vertex in path
 	'''
         print "Current position = ({},{})".format(self.xpos, self.ypos)
         print "Current goal = ({}, {})".format(x, y)
+
         self.dgoal = np.arctan(float(y-self.ypos)/float(x-self.xpos))
         print "dgoal = ", self.dgoal
         print "self.theta = ", self.theta
@@ -72,6 +75,7 @@ class rover:
         diff_deg = diff_rad/np.pi*180
         print 'diff_rad = ', diff_rad
     	print 'diff_deg = ', diff_deg
+
     	self.rotate(diff_deg)
         time.sleep(0.3)
         dist = np.sqrt((x-self.xpos)**2+(y-self.ypos)**2)

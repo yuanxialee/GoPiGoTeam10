@@ -5,14 +5,14 @@ import matplotlib.pyplot as plt
 class obstacles:
 
 	def __init__(self):
-		self.blocks = []
-		self.shapes = []
-		self.gblocks = []
+		self.blocks = [] #the original blocks
+		self.shapes = [] #append the first coordinate points to the end so that plotting looks nice
+		self.gblocks = [] #grown obstacles
 
 	def add_block(self, b, x): 
-		self.blocks.append(b.get_block())
-		self.shapes.append(b.connect())
-		self.gblocks.append(b.grow_blocks(x))
+		self.blocks.append(b.get_block()) #add block points to obstacles list
+		self.shapes.append(b.connect()) #connect block points for plotting shape
+		self.gblocks.append(b.grow_blocks(x)) #grow block b by x square
 
 	def get_obstacle(self, x):
 		return self.blocks[x]
@@ -37,14 +37,12 @@ class obstacles:
 
 
 
-
-
 class block: 
 
 	def __init__(self):
-		self.points = []
-		self.vertices = []
-		self.gpoints = []
+		self.points = [] #used for singular obstacle or "block"
+		self.vertices = [] #used for plotting shape
+		self.gpoints = [] #used for grown block
 
 
 	def add_points(self, x, y):
@@ -62,8 +60,8 @@ class block:
 	def grow_blocks(self, x):
 		i = 0
 		sides = len(self.points)
-		#print "self.points = ", self.points
-		#print "Sides = ", sides
+
+		#use square growth
 		while sides > 0:
 			self.gpoints.append(self.points[i])
 			self.gpoints.append([self.points[i][0], self.points[i][1]+x])
@@ -71,7 +69,6 @@ class block:
 			self.gpoints.append([self.points[i][0]+x, self.points[i][1]+x])
 			i += 1
 			sides -= 1
-			#print "Sides = ", sides
 
 		return self.gpoints
 

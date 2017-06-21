@@ -36,13 +36,13 @@ class edge:
     def __str__(self):
         return "{} -- {} -> {}".format(self.source,self.weight,self.target)
 
-    #TODO: add comparator??
+
     def __cmp__(self, other):
         return self.source == self.source and self.target == self.target
 class graph:
 
     def __init__(self):
-        self.vertices = {}
+        self.vertices = {}  #set of vertices in entire graph
         self.start = None
 
     def add_vertex(self, id, x, y, b):
@@ -76,6 +76,7 @@ class graph:
         return self.vertices[id]
 
     def intersect(self, edge1, edge2):
+        #check for intersections to create visibility graph
         p1 = np.array([edge1.source.x, edge1.source.y])
         p2 = np.array([edge2.source.x, edge2.source.y])
         p3 = np.array([edge1.target.x, edge1.target.y])
@@ -113,6 +114,7 @@ class graph:
         
 
     def min_dist(self, visit = []):
+        #find the mininmum distance in graph for dijkstra
         i = 0
         mini = self.get_vertex(visit[i].id).dist
         node = self.get_vertex(visit[i].id)
@@ -145,6 +147,7 @@ class graph:
         plt.show()
 
     def path(self, to):
+        #shortest path to goal that gets printed to command line
         if to not in self.vertices:
             raise ValueError('{} does not exist.'.format(to))
         path = []
@@ -175,8 +178,7 @@ class graph:
                     t.prev = minv
 
             minv.known = True
-            complete.append(minv.id)
-            
+            complete.append(minv.id) 
 
             j = len(visit)
             i = 0
