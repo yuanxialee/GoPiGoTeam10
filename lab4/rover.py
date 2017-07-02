@@ -14,10 +14,6 @@ class rover:
 		self.carea = area
 
 	def move(self, x, y, area):
-		#while(True):
-		#	if y >= 460:
-		#		print "This is not trackable."
-		#		break
 		if abs(y-self.cy) > 15:
 			if y < self.cy:
 				rot_deg(10)
